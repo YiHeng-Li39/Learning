@@ -1,0 +1,376 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={k-means 聚类算法：数学描述与实例},
+  pdfauthor={AI Assistant},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{k-means 聚类算法：数学描述与实例}
+\author{AI Assistant}
+\date{2026-05-16}
+
+\begin{document}
+\maketitle
+
+\section{1. k-means
+算法的数学描述}\label{k-means-ux7b97ux6cd5ux7684ux6570ux5b66ux63cfux8ff0}
+
+k-means 是一种基于\textbf{划分}的聚类方法，旨在将数据集划分为 \(k\)
+个互不相交的簇，使得每个样本与其所属簇中心的距离平方和最小化。
+
+\subsection{1.1 符号定义}\label{ux7b26ux53f7ux5b9aux4e49}
+
+\begin{itemize}
+\tightlist
+\item
+  数据集：\(\mathcal{X} = \{x_1, x_2, \dots, x_n\}\)，其中每个
+  \(x_i \in \mathbb{R}^d\)。
+\item
+  簇的个数：\(k\)（给定）。
+\item
+  簇的划分：\(\mathcal{C} = \{C_1, C_2, \dots, C_k\}\)，满足
+  \(C_i \neq \emptyset\)，\(\bigcup_{i=1}^k C_i = \mathcal{X}\)，且
+  \(C_i \cap C_j = \emptyset \ (i \neq j)\)。
+\item
+  簇中心（质心）：\(\mu_j = \frac{1}{|C_j|} \sum_{x \in C_j} x\)，即簇内所有点的均值向量。
+\end{itemize}
+
+\subsection{1.2
+目标函数（损失函数）}\label{ux76eeux6807ux51fdux6570ux635fux5931ux51fdux6570}
+
+k-means 最小化\textbf{簇内平方和}（Within-Cluster Sum of Squares,
+WCSS）：
+
+\[
+\text{WCSS} = \sum_{j=1}^k \sum_{x \in C_j} \|x - \mu_j\|^2
+\]
+
+其中 \(\|\cdot\|\) 表示欧几里得距离。
+
+\subsection{1.3
+迭代优化步骤}\label{ux8fedux4ee3ux4f18ux5316ux6b65ux9aa4}
+
+由于直接求解上述组合优化问题是 NP 难的，k-means
+采用\textbf{启发式迭代}算法，通常称为 \textbf{Lloyd 算法}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{初始化}：选择 \(k\) 个样本点作为初始簇中心
+  \(\mu_1^{(0)}, \mu_2^{(0)}, \dots, \mu_k^{(0)}\)（常用随机选取或
+  k-means++）。
+\item
+  \textbf{分配（Assignment step）}：将每个样本点分配到最近的簇中心： \[
+  C_j^{(t)} = \left\{ x_i : \|x_i - \mu_j^{(t)}\|^2 \le \|x_i - \mu_l^{(t)}\|^2 \ \forall l \in \{1,\dots,k\} \right\}
+  \]
+\item
+  \textbf{更新（Update step）}：重新计算每个簇的质心： \[
+  \mu_j^{(t+1)} = \frac{1}{|C_j^{(t)}|} \sum_{x \in C_j^{(t)}} x
+  \]
+\item
+  \textbf{收敛判断}：重复步骤 2 和
+  3，直到簇中心不再变化（或变化小于阈值），或达到最大迭代次数。
+\end{enumerate}
+
+\subsection{1.4 算法性质}\label{ux7b97ux6cd5ux6027ux8d28}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{收敛性}：每次迭代 WCSS
+  严格下降（或保持不变），且存在下界，因此算法必然收敛（但不一定收敛到全局最优）。
+\item
+  \textbf{时间复杂度}：\(O(I \cdot k \cdot n \cdot d)\)，其中 \(I\)
+  为迭代次数，通常较小。
+\item
+  \textbf{局限性}：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    需要预先指定 \(k\)。
+  \item
+    对初始中心敏感，易陷入局部最优。
+  \item
+    对噪声和异常值敏感（因为使用平方距离）。
+  \item
+    假设簇是凸的、大小相近、球形分布。
+  \end{itemize}
+\end{itemize}
+
+\section{2. 网上类似的 k-means 实例（使用 R
+语言）}\label{ux7f51ux4e0aux7c7bux4f3cux7684-k-means-ux5b9eux4f8bux4f7fux7528-r-ux8bedux8a00}
+
+下面是一个典型的 k-means 聚类示例，使用 R 内置的 \texttt{iris}
+数据集（去除物种标签，仅用四个数值特征）。我们将展示：
+
+\begin{itemize}
+\tightlist
+\item
+  如何确定最佳 \(k\)（肘部法则）；
+\item
+  执行 k-means 聚类；
+\item
+  可视化聚类结果（降维后展示）。
+\end{itemize}
+
+\subsection{2.1
+加载数据与预处理}\label{ux52a0ux8f7dux6570ux636eux4e0eux9884ux5904ux7406}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(iris)}
+\CommentTok{\# 只使用数值特征}
+\NormalTok{iris\_features }\OtherTok{\textless{}{-}}\NormalTok{ iris[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{]}
+\FunctionTok{head}\NormalTok{(iris\_features)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1          5.1         3.5          1.4         0.2
+## 2          4.9         3.0          1.4         0.2
+## 3          4.7         3.2          1.3         0.2
+## 4          4.6         3.1          1.5         0.2
+## 5          5.0         3.6          1.4         0.2
+## 6          5.4         3.9          1.7         0.4
+\end{verbatim}
+
+\subsection{2.2
+确定簇的数量：肘部法则}\label{ux786eux5b9aux7c07ux7684ux6570ux91cfux8098ux90e8ux6cd5ux5219}
+
+计算不同 \(k\)（2\textasciitilde10）对应的 WCSS，选择``肘部''位置。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{wcss }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{2}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(k) \{}
+  \FunctionTok{kmeans}\NormalTok{(iris\_features, }\AttributeTok{centers =}\NormalTok{ k, }\AttributeTok{nstart =} \DecValTok{25}\NormalTok{)}\SpecialCharTok{$}\NormalTok{tot.withinss}
+\NormalTok{\})}
+
+\NormalTok{elbow\_df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{k =} \DecValTok{2}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{wcss =}\NormalTok{ wcss)}
+
+\FunctionTok{ggplot}\NormalTok{(elbow\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ k, }\AttributeTok{y =}\NormalTok{ wcss)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"steelblue"}\NormalTok{, }\AttributeTok{size =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"肘部法则确定最佳 k 值"}\NormalTok{, }\AttributeTok{x =} \StringTok{"簇数 k"}\NormalTok{, }\AttributeTok{y =} \StringTok{"WCSS"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{k-means_files/figure-latex/elbow-1.pdf}}
+
+图中显示在 \(k=3\) 处出现明显``肘点''，与 iris 真实类别数一致，因此选择
+\(k=3\)。
+
+\subsection{2.3 执行 k-means
+聚类}\label{ux6267ux884c-k-means-ux805aux7c7b}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{km\_result }\OtherTok{\textless{}{-}} \FunctionTok{kmeans}\NormalTok{(iris\_features, }\AttributeTok{centers =} \DecValTok{3}\NormalTok{, }\AttributeTok{nstart =} \DecValTok{25}\NormalTok{)}
+\CommentTok{\# 查看聚类结果摘要}
+\FunctionTok{table}\NormalTok{(km\_result}\SpecialCharTok{$}\NormalTok{cluster)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  1  2  3 
+## 50 62 38
+\end{verbatim}
+
+\subsection{2.4
+可视化聚类结果}\label{ux53efux89c6ux5316ux805aux7c7bux7ed3ux679c}
+
+由于原始数据是四维的，我们使用 PCA 降维到二维平面来展示聚类效果。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 执行 PCA}
+\NormalTok{pca }\OtherTok{\textless{}{-}} \FunctionTok{prcomp}\NormalTok{(iris\_features, }\AttributeTok{scale. =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{pca\_df }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(pca}\SpecialCharTok{$}\NormalTok{x[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{])}
+\NormalTok{pca\_df}\SpecialCharTok{$}\NormalTok{cluster }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(km\_result}\SpecialCharTok{$}\NormalTok{cluster)}
+\NormalTok{pca\_df}\SpecialCharTok{$}\NormalTok{species }\OtherTok{\textless{}{-}}\NormalTok{ iris}\SpecialCharTok{$}\NormalTok{Species  }\CommentTok{\# 真实标签（仅用于对照）}
+
+\CommentTok{\# 绘制聚类结果（颜色表示算法分配的簇）}
+\FunctionTok{ggplot}\NormalTok{(pca\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ PC1, }\AttributeTok{y =}\NormalTok{ PC2, }\AttributeTok{color =}\NormalTok{ cluster)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_ellipse}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ cluster), }\AttributeTok{type =} \StringTok{"norm"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\AttributeTok{geom =} \StringTok{"polygon"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"k{-}means 聚类结果（k=3）"}\NormalTok{, }
+       \AttributeTok{subtitle =} \StringTok{"基于 PCA 降维，椭圆表示 95\% 置信区间"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{k-means_files/figure-latex/pca-viz-1.pdf}}
+
+为验证聚类效果，可以对照真实物种标签：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(pca\_df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ PC1, }\AttributeTok{y =}\NormalTok{ PC2, }\AttributeTok{color =}\NormalTok{ species)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"真实物种标签（对照）"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{k-means_files/figure-latex/compare-real-1.pdf}}
+
+可以看到，k-means 聚类结果与真实类别高度吻合（仅有少量样本可能被混淆）。
+
+\subsection{2.5
+输出簇中心信息}\label{ux8f93ux51faux7c07ux4e2dux5fc3ux4fe1ux606f}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{centers }\OtherTok{\textless{}{-}}\NormalTok{ km\_result}\SpecialCharTok{$}\NormalTok{centers}
+\FunctionTok{colnames}\NormalTok{(centers) }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(iris\_features)}
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(centers, }\AttributeTok{caption =} \StringTok{"三个簇的中心（原始特征尺度）"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}rrrr@{}}
+\caption{三个簇的中心（原始特征尺度）}\tabularnewline
+\toprule\noalign{}
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+5.006000 & 3.428000 & 1.462000 & 0.246000 \\
+5.901613 & 2.748387 & 4.393548 & 1.433871 \\
+6.850000 & 3.073684 & 5.742105 & 2.071053 \\
+\end{longtable}
+
+\section{3. 总结}\label{ux603bux7ed3}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{数学描述}：k-means
+  通过最小化簇内平方和来划分数据，迭代执行``分配-更新''两步，是一种简单高效的聚类算法。
+\item
+  \textbf{实例演示}：对鸢尾花数据集，肘部法则确定最佳簇数
+  \(k=3\)，聚类结果与真实类别高度一致，验证了算法的有效性。
+\end{itemize}
+
+```
+
+\end{document}

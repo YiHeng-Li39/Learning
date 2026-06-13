@@ -1,0 +1,172 @@
+---
+title: "k-means聚类算法：算法描述与iris鸢尾花实例"
+author: "2312473-李一珩"
+date: "`r Sys.Date()`"
+output: html_document
+header-includes: |
+  <style>
+    .title {
+      text-align: center;
+      font-size: 2em;
+      margin-top: 1em;
+    }
+    .author {
+      text-align: center;
+      font-size: 1.2em;
+      margin-top: 0.5em;
+    }
+    .date {
+      text-align: center;
+      font-size: 1em;
+      margin-top: 0.5em;
+      margin-bottom: 2em;
+    }
+  </style>
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(ggplot2)
+library(dplyr)
+```
+
+# 1. k-means 算法的数学描述
+
+k-means 是一种基于**划分**的聚类方法，旨在将数据集划分为 \(k\) 个互不相交的簇，使得每个样本与其所属簇中心的距离平方和最小化。
+
+## 1.1 符号定义
+
+- 数据集：\(\mathcal{X} = \{x_1, x_2, \dots, x_n\}\)，其中每个 \(x_i \in \mathbb{R}^d\)。
+- 簇的个数：\(k\)（给定）。
+- 簇的划分：\(\mathcal{C} = \{C_1, C_2, \dots, C_k\}\)，满足 \(C_i \neq \emptyset\)，\(\bigcup_{i=1}^k C_i = \mathcal{X}\)，且 \(C_i \cap C_j = \emptyset \ (i \neq j)\)。
+- 簇中心（质心）：\(\mu_j = \frac{1}{|C_j|} \sum_{x \in C_j} x\)，即簇内所有点的均值向量。
+
+## 1.2 目标函数（损失函数）
+
+k-means 最小化**簇内平方和**（Within-Cluster Sum of Squares, WCSS）：
+
+\[
+\text{WCSS} = \sum_{j=1}^k \sum_{x \in C_j} \|x - \mu_j\|^2
+\]
+
+其中 \(\|\cdot\|\) 表示欧几里得距离。
+
+## 1.3 迭代优化步骤
+
+由于直接求解上述组合优化问题是 NP 难的，k-means 采用**启发式迭代**算法，通常称为 **Lloyd 算法**：
+
+1. **初始化**：选择 \(k\) 个样本点作为初始簇中心 \(\mu_1^{(0)}, \mu_2^{(0)}, \dots, \mu_k^{(0)}\)（常用随机选取或 k-means++）。
+2. **分配（Assignment step）**：将每个样本点分配到最近的簇中心：
+   \[
+   C_j^{(t)} = \left\{ x_i : \|x_i - \mu_j^{(t)}\|^2 \le \|x_i - \mu_l^{(t)}\|^2 \ \forall l \in \{1,\dots,k\} \right\}
+   \]
+3. **更新（Update step）**：重新计算每个簇的质心：
+   \[
+   \mu_j^{(t+1)} = \frac{1}{|C_j^{(t)}|} \sum_{x \in C_j^{(t)}} x
+   \]
+4. **收敛判断**：重复步骤 2 和 3，直到簇中心不再变化（或变化小于阈值），或达到最大迭代次数。
+
+## 1.4 算法性质
+
+- **收敛性**：每次迭代 WCSS 严格下降（或保持不变），且存在下界，因此算法必然收敛（但不一定收敛到全局最优）。
+- **时间复杂度**：\(O(I \cdot k \cdot n \cdot d)\)，其中 \(I\) 为迭代次数，通常较小。
+- **局限性**：
+  - 需要预先指定 \(k\)。
+  - 对初始中心敏感，易陷入局部最优。
+  - 对噪声和异常值敏感（因为使用平方距离）。
+  - 假设簇是凸的、大小相近、球形分布。
+
+# 2.  k-means 实例——基于R自带的iris鸢尾花数据集
+
+使用 R 内置的 `iris` 鸢尾花数据集
+
+去除物种标签，仅用四个数值特征，我们将展示：
+
+- 如何确定最佳 \(k\)（肘部法则）；
+- 执行 k-means 聚类；
+- 可视化聚类结果（降维后展示）。
+
+## 2.1 加载数据与预处理
+
+```{r data-prep}
+data(iris)
+# 只使用数值特征
+iris_features <- iris[, 1:4]
+head(iris_features)
+```
+
+## 2.2 确定簇的数量：肘部法则
+
+计算不同 \(k\)（2~10）对应的 WCSS，选择“肘部”位置。
+
+```{r elbow}
+set.seed(123)
+wcss <- sapply(2:10, function(k) {
+  kmeans(iris_features, centers = k, nstart = 25)$tot.withinss
+})
+
+elbow_df <- data.frame(k = 2:10, wcss = wcss)
+
+ggplot(elbow_df, aes(x = k, y = wcss)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(size = 2) +
+  labs(title = "肘部法则确定最佳 k 值", x = "簇数 k", y = "WCSS") +
+  theme_minimal()
+```
+
+图中显示在 \(k=3\) 处出现明显“肘点”，与 iris 真实类别数一致，因此选择 \(k=3\)。
+
+## 2.3 执行 k-means 聚类
+
+```{r kmeans-fit}
+set.seed(123)
+km_result <- kmeans(iris_features, centers = 3, nstart = 25)
+# 查看聚类结果摘要
+table(km_result$cluster)
+```
+
+## 2.4 可视化聚类结果
+
+由于原始数据是四维的，我们使用 PCA 降维到二维平面来展示聚类效果。
+
+```{r pca-viz}
+# 执行 PCA
+pca <- prcomp(iris_features, scale. = TRUE)
+pca_df <- as.data.frame(pca$x[, 1:2])
+pca_df$cluster <- as.factor(km_result$cluster)
+pca_df$species <- iris$Species  # 真实标签（仅用于对照）
+
+# 绘制聚类结果（颜色表示算法分配的簇）
+ggplot(pca_df, aes(x = PC1, y = PC2, color = cluster)) +
+  geom_point(size = 2, alpha = 0.7) +
+  stat_ellipse(aes(fill = cluster), type = "norm", alpha = 0.2, geom = "polygon") +
+  labs(title = "k-means 聚类结果（k=3）", 
+       subtitle = "基于 PCA 降维，椭圆表示 95% 置信区间") +
+  theme_minimal()
+```
+
+为验证聚类效果，可以对照真实物种标签：
+
+```{r compare-real}
+ggplot(pca_df, aes(x = PC1, y = PC2, color = species)) +
+  geom_point(size = 2, alpha = 0.7) +
+  labs(title = "真实物种标签（对照）") +
+  theme_minimal()
+```
+
+可以看到，k-means 聚类结果与真实类别高度吻合，仅有少量样本可能被混淆。
+
+## 2.5 输出簇中心信息
+
+```{r centers}
+centers <- km_result$centers
+colnames(centers) <- names(iris_features)
+knitr::kable(centers, caption = "三个簇的中心（原始特征尺度）")
+```
+
+# 3. 总结
+
+- **数学描述**：k-means 通过最小化簇内平方和来划分数据，迭代执行“分配-更新”两步，是一种简单高效的聚类算法。
+- **实例演示**：对鸢尾花数据集，肘部法则确定最佳簇数 \(k=3\)，聚类结果与真实类别高度一致，验证了算法的有效性。
+
+```
